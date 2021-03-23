@@ -58,7 +58,7 @@ ip.addParameter('autoApply',false);
 ip.addParameter('outfile',[]);
 ip.addParameter('numframes',0);
 ip.addParameter('correct_frames', false);
-ip.addParameter('channels',{'Y_pos','reward','lick', 'velocity'}); % CAN ANNOTATE might want to change the name here
+ip.addParameter('channels',{'Y_pos','reward','lick', 'velocity','shock'}); % CAN ANNOTATE might want to change the name here
 ip.addParameter('out_modes',{'mean','mean','mean','mean', 'mean'});
 ip.parse(varargin{:})
 for j=fields(ip.Results)'
@@ -73,7 +73,7 @@ end
 
 % Handle outfile
 
-numframes = [39000 39000];
+numframes = [12000 12000 12000 ];
 correct_frames = true;
 session = struct;
 tif_frame_counts=numframes;
@@ -113,6 +113,7 @@ for i=1:length(beh_filepaths)
     %rawdata{4}=whole_data.C;
     rawdata{4}=whole_data.D;
     rawdata{5}=whole_data.F;
+    rawdata{6}=whole_data.E;
     raw_data{i}=cell2mat(rawdata);
     
 end
@@ -517,6 +518,6 @@ plot(session.beh_data.Y_pos)
 hold on
 plot(session.beh_data.lick/5)
 
-%save([save_name '.mat'],'session')
+save([save_name '.mat'],'session')
 end
 

@@ -4,10 +4,10 @@ load([temp behavior_filepaths])
 figure;
 
 subplot_x=10;
-subplot_y=10;%ceil(sum(number_of_PFs(~isnan(number_of_PFs)))/subplot_x);
+subplot_y=5;%ceil(sum(number_of_PFs(~isnan(number_of_PFs)))/subplot_x);
 PC_count=0;
 PC_id=find(~isnan(number_of_PFs));
-for i=PC_id(1:100)
+for i=1:100
     for j=1:size(sig_PFs,1)
         if ~isempty(sig_PFs{j,i})
             binmean_temp=sig_PFs{j,i};
@@ -25,10 +25,11 @@ for i=PC_id(1:100)
             %saveas(f,name,'epsc')
             %pause(1)
     
-        end
+        %end
 subplot(subplot_y,subplot_x,PC_count);
 imagesc(binmean_temp');
-title(['neuron id=' num2str(i)])    
+title(['neuron id=' num2str(i)])
+    end
     end
                     
 

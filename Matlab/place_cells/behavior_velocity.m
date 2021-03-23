@@ -208,7 +208,7 @@ title('velocity by lap with freezeing (cm/s)')
 % legend({'f2','n2','nday2'},'Location','bestoutside')
 % title('freeze by lap (sec)')
 
-save([behavior_path_day1(15:end-4) 'velocity_info'],'f1_v','n1_v','f2_v','n2_v','nday2_v');
+save([behavior_path_day1(15:end-4) 'velocity_info_new'],'f1_v','n1_v','f2_v','n2_v','nday2_v');
 %%
 function v_info=find_velocity(ybinned,reward,velocity,y_belong,sample_rate,track_length,binnum)
 

@@ -22,6 +22,7 @@ for i =1:size(sig_PFs,2)
             for j=1:size(common_PC_id{p,i},1)
                 binM=1:numbins;
                 cur_binmean=sig_PFs{p,i}{1,common_PC_id{p,i}(j)}';
+                if ~isclipped(cur_binmean')
                 %shuffle_id=randperm(size(cur_binmean,1));
                 %cur_binmean=cur_binmean(shuffle_id,:);
                 max_lap=size(cur_binmean,2);
@@ -52,6 +53,7 @@ for i =1:size(sig_PFs,2)
                 lap_Start=[lap_Start start_lap];
                 active_lap_num=[active_lap_num active_lap];
                 last_actlap=[last_actlap last_act];
+                end
             end
             meanCOM_first5{p,i}=beginCOM;
             shuffle_start5=[shuffle_start5 beginCOM];

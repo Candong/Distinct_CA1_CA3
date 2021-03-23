@@ -1,0 +1,119 @@
+clear all; close all;
+% for now the slope is calculated by onstlap and later com differences, it
+% could also include the earlier activities before `````````` bwq
+% 
+[pf_files, temp]=uigetfile('*.mat', 'Chose PF files to load:','MultiSelect','on');
+
+window=1;
+onsetlap=0;
+step=5;
+%%
+f_slope=[];
+f_all_start_lap=[];
+f_COM_start=[];
+f_COM_end=[];
+f_COM_alllaps=[];
+
+for f=1:size(pf_files,2)
+load(pf_files{f});
+[slope all_start_lap COM_start COM_end COM_alllaps]=caculate_shift_parameters(sig_PFs,window,onsetlap,step);
+f_slope=[f_slope slope];
+f_all_start_lap=[f_all_start_lap all_start_lap];
+f_COM_start=[f_COM_start COM_start];
+f_COM_end=[f_COM_end COM_end];
+f_COM_alllaps=[f_COM_alllaps COM_alllaps];
+
+
+
+
+end
+
+figure;plot(f_COM_start,f_slope,'o')
+figure;plot(f_COM_end,f_slope,'o')
+figure;plot(f_COM_alllaps,f_slope,'o')
+
+%%
+[pf_files, temp]=uigetfile('*.mat', 'Chose PF files to load:','MultiSelect','on');
+n_slope=[];
+n_all_start_lap=[];
+n_COM_start=[];
+n_COM_end=[];
+n_COM_alllaps=[];
+
+for f=1:size(pf_files,2)
+load(pf_files{f});
+[slope all_start_lap COM_start COM_end COM_alllaps]=caculate_shift_parameters(sig_PFs,window,onsetlap,step);
+n_slope=[n_slope slope];
+n_all_start_lap=[n_all_start_lap all_start_lap];
+n_COM_start=[n_COM_start COM_start];
+n_COM_end=[n_COM_end COM_end];
+n_COM_alllaps=[n_COM_alllaps COM_alllaps];
+
+
+
+
+end
+
+figure;plot(n_COM_start,n_slope,'o')
+figure;plot(n_COM_end,n_slope,'o')
+figure;plot(n_COM_alllaps,n_slope,'o')
+
+%%
+% function [slope all_start_lap COM_start COM_end COM_alllaps]=caculate_shift_parameters(sig_PFs,window,onsetlap,step)
+% delta_COM=[];
+% Rsquare=[];
+% slope=[];
+% Rsquare2=[];
+% slope=[];
+% var_y=[];
+% var_y2=[];
+% 
+% [COM all_start_lap]=calculate_and_linreg_eachCOM_by_window(sig_PFs,window,onsetlap);
+% [COM_start COM_end COM_alllaps]=calculate_start_end_alllaps_COM(sig_PFs,step,onsetlap);
+% 
+% % total_mean_var=[];
+% %figure; hold on;
+%     for i=1:size(COM,1)
+%         cur_deltaCOM= COM(i,:)-COM(i,all_start_lap(i)); 
+%         delta_COM=[delta_COM; cur_deltaCOM ];
+%         % figure;hold on;
+%         % plot(1:size(COM,2), cur_deltaCOM,'o');
+%         % ylim([-10 10])
+% 
+%         x=1:size(COM,2);
+%         x(isnan(cur_deltaCOM))=[];
+%         y=cur_deltaCOM(~isnan(cur_deltaCOM));
+%         if onsetlap==0 %start regression from first lap with activity
+% %             cur_var_y=var(y);
+% %             var_y=[var_y cur_var_y];
+%             model=fitlm(x, y);
+%             % plot(x,model.('Coefficients').('Estimate')(2).*x+ model.('Coefficients').('Estimate')(1));
+%             % xlim([1 size(COM,2)]);
+% 
+%             slope=[slope model.('Coefficients').('Estimate')(2)];
+%             cur_r_squared=model.Rsquared.Ordinary;
+%             Rsquare=[Rsquare cur_r_squared];
+% 
+%         else
+%             x2=x(x>=all_start_lap(i));
+%             y2=y(x>=all_start_lap(i));
+% %             cur_var_y2=var(y2);
+% %             var_y2=[var_y2 cur_var_y2];
+%             model=fitlm(x2,y2);
+%             slope=[slope model.('Coefficients').('Estimate')(2)];
+%             cur_r_squared2=model.Rsquared.Ordinary;
+%             Rsquare2=[Rsquare2 model.Rsquared.Ordinary];
+%             mean_var=windowed_var(y2,3);
+%             total_mean_var=[total_mean_var mean_var];
+% 
+%         end
+% 
+% 
+% 
+% 
+% 
+%     end
+% end
+
+
+

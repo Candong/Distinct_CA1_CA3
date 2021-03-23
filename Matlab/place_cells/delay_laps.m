@@ -226,17 +226,17 @@ hold on;bar(n_distribution./sum(n_distribution))
 %figure
 norm_f=f_distribution/sum(f_distribution);
 norm_n=n_distribution/sum(n_distribution);
+%%
+cdfplot(f_PF_start(f_PF_start>0));
+hold on; cdfplot(n_PF_start(n_PF_start>0));
+xlim([0 30])
+[p h stats]=ranksum(f_PF_start(f_PF_start>0),n_PF_start(n_PF_start>0))
+title(['CA3 wilcoxon test,p= ' num2str(p)]);
+xlabel('PC onset lap')
+legend({'f','n'})
+grid off
 
-% cdfplot(f_PF_start(f_PF_start>0));
-% hold on; cdfplot(n_PF_start(n_PF_start>0));
-% xlim([0 30])
-% p=ranksum(f_PF_start(f_PF_start>0),n_PF_start(n_PF_start>0));
-% title(['CA3 wilcoxon test,p= ' num2str(p)]);
-% xlabel('PC onset lap')
-% legend({'f','n'})
-% grid off
-
-save('CA3_onset_dist','f_distribution','n_distribution','f_PF_start','n_PF_start');
+%save('CA3_onset_dist','f_distribution','n_distribution','f_PF_start','n_PF_start');
 % 
 % %%
 % instant_PF_id=n_PF_id(PF_start_lap==1);

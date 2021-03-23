@@ -54,14 +54,14 @@ for f=1:size(PC_filepaths,2)
             unpass_count=unpass_count+1;
         end
         %if size(binmean,2)>=30
-        half_lap=10;%floor(max_lap/2);
+        half_lap=floor(max_lap/2);
         f_first_mean=[f_first_mean; mean(binmean(:,(1:half_lap)),2)'];
         f_second_mean=[f_second_mean; mean(binmean(:,end-half_lap+1:end),2)']; 
         day1_last_mean=[day1_last_mean;mean(noisy_binmean(:,end-half_lap+1:end),2)'];
         %end
         end
-        f_first_mean(f_startlap>10,:)=[];
-        f_second_mean(f_startlap>10,:)=[];
+%         f_first_mean(f_startlap>10,:)=[];
+%         f_second_mean(f_startlap>10,:)=[];
         
         F_first_mean{p,f_count}=f_first_mean;
         F_second_mean{p,f_count}=f_second_mean;
@@ -111,15 +111,15 @@ for f=1:size(PC_filepaths,2)
             cur_inst_PF=[cur_inst_PF pf_id(i)];
         end
         %if size(binmean,2)>=30
-        half_lap=10%floor(max_lap/2);
+        half_lap=floor(max_lap/2);
         n_first_mean=[n_first_mean; mean(binmean(:,(1:half_lap)),2)'];
         n_second_mean=[n_second_mean; mean(binmean(:,end-half_lap+1:end),2)']; 
         day2_first_mean=[day2_first_mean; mean(noisy_binmean(:,1:half_lap),2)']; 
         %end
         
         end
-        n_first_mean(n_startlap>10,:)=[];
-        n_second_mean(n_startlap>10,:)=[];
+%         n_first_mean(n_startlap>10,:)=[];
+%         n_second_mean(n_startlap>10,:)=[];
         
         N_first_mean{p,n_count}=n_first_mean;
         N_second_mean{p,n_count}=n_second_mean;
@@ -296,7 +296,7 @@ hold on;
 histogram(n_cor,range)
 legend({'f','n'})
 title('f & n 1st last 10 lap correlation')
-save('ca3_cor_halflap','f_cor','total_cor','n_cor');
+%save('ca3_cor_halflap','f_cor','total_cor','n_cor');
 %plot([1],mean(total_cor),'or','LineWidth',3)
 % figure;
 % plot([1],exclude_total_cor,'o')
@@ -371,7 +371,7 @@ figure
 cdfplot(consistent_start);
 hold on; cdfplot(new_start);
 xlim([0 30])
-p=ranksum(consistent_start,new_start);
+[p h stats]=ranksum(consistent_start,new_start)
 title(['CA3 onsetlap wilcoxon test,p= ' num2str(p)]);
 xlabel('PC onset lap')
 legend('consistent','newly formed')

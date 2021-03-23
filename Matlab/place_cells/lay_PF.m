@@ -23,9 +23,11 @@ for f=1:size(behavior_filepaths,2)
 end
 f_filepaths=sort(f_filepaths);
 n_filepaths=sort(n_filepaths);
+f_pc=0;
 for f=1:size(f_filepaths,2)
 load([temp f_filepaths{f}]);
 placecell_id{f}=[];
+f_pc=f_pc+size(mean_trans,1);
 for i=1:size(sig_PFs,2)
     for j=1:size(sig_PFs,1)
         if ~isempty(sig_PFs{j,i})
@@ -73,8 +75,10 @@ PF_count=1;
 %   behavior_filepaths={behavior_filepaths};  
 %     
 % end 
+n_pc=0;
 for f=1:size(n_filepaths,2)
 load([temp n_filepaths{f}]);
+n_pc=n_pc+size(mean_trans,1);
 for i=1:size(sig_PFs,2)
     for j=1:size(sig_PFs,1)
         if ~isempty(sig_PFs{j,i})

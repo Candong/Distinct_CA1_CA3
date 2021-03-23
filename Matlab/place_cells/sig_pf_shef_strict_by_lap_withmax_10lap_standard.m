@@ -1,5 +1,5 @@
 clear all
-%close all
+close all
 
 
 %load file
@@ -20,13 +20,13 @@ last=0;
 tracklength=300; %in cm
 %num_of_lap=1:25;
 % % f10min
- %startF=1;
+ startF=1;
 %startF=13001;
-  %endF=8000;
+  endF=7000;
 % % 
 % %n1st10min
-startF=behavior.startframe(end);
-endF=length(behavior.ybinned);
+% startF=behavior.startframe(end);
+% endF=length(behavior.ybinned);
 %endF=14000;
 % % 
 % %n2nd10min
@@ -34,8 +34,7 @@ endF=length(behavior.ybinned);
 %endF=length(behavior.ybinned);
 % 
 %flast5min
-% startF=3500;
-% endF=7000;
+
 
 % %nlast5min
 % startF=behavior.startframe+3500;
@@ -55,9 +54,9 @@ empty_id=[];
 
 
 %%
-ybinmax=0.612;
-label_high=0.015;
-label_low=0.0145;
+ybinmax=0.62;
+label_high=0.036;
+label_low=0.035;
 
 
 
@@ -94,6 +93,23 @@ width_M=zeros(1000,1000);
 
 %% correct E
     wrong_lap=0;
+    
+        for i=1:max(E)
+
+        if i==1
+        onpoint=find(E==i,1);
+        offpoint=find(E==i,1,'last');  
+        if onpoint==1 & ybinned(onpoint)>0.12
+            E(onpoint:offpoint)=0;
+            E=E-1;
+        end
+%         if ybinned(onpoint-1)>0.12
+%             E(E~=0)=E(E~=0)-1;
+%         end
+        
+        end
+
+    end
     for i=1:max(E)
             
         onpoint=find(E==i,1);
@@ -115,20 +131,7 @@ width_M=zeros(1000,1000);
     end
 
     
-    for i=1:max(E)
 
-        if i==1
-        onpoint=find(E==i,1);
-        if onpoint==1
-            onpoint=2;
-        end
-        if ybinned(onpoint-1)>0.12
-            E(E~=0)=E(E~=0)-1;
-        end
-        
-        end
-
-    end
 %num_of_lap=(max(E)-25):max(E); last=1;   
 % E(E<min(num_of_lap)|E>max(num_of_lap))=0;
 % E=E-min(num_of_lap)+1;
@@ -193,7 +196,7 @@ for ii = 1:numneurons
         end
     end
     
-    figure;imagesc(binMean')
+    %figure;imagesc(binMean')
     
     mean_trans(ii,:)=mean(binMean,2);
     binMean_M(:,:,ii)=binMean';
@@ -573,9 +576,10 @@ end %loops through each neuronn
 % 
 % end
 % end
-if startF>300
-    save([behavior_filepaths(1:end-4) '_n_PF_strict_alllap_' num2str(minrate) 'lap'],'sig_PFs','sig_PFs_with_noise','PF_width','PF_rate','PF_start_bins','PF_PVALS','PF_end_bins','number_of_PFs','mean_trans','label_high','label_low','ybinmax','empty_id','parameters');%,'cell_ROI','-append');
-else
-    save([behavior_filepaths(1:end-4) '_f_PF_strict_alllap_' num2str(minrate) 'lap'],'sig_PFs','sig_PFs_with_noise','PF_width','PF_rate','PF_start_bins','PF_PVALS','PF_end_bins','number_of_PFs','mean_trans','label_high','label_low','ybinmax','empty_id','parameters');%,'cell_ROI','-append');
-end
+% if startF>300
+%     save([behavior_filepaths(1:end-4) '_n_PF_strict_alllap_' num2str(minrate) 'lap'],'sig_PFs','sig_PFs_with_noise','PF_width','PF_rate','PF_start_bins','PF_PVALS','PF_end_bins','number_of_PFs','mean_trans','label_high','label_low','ybinmax','empty_id','parameters');%,'cell_ROI','-append');
+% else
+%     save([behavior_filepaths(1:end-4) '_f_PF_strict_alllap_' num2str(minrate) 'lap'],'sig_PFs','sig_PFs_with_noise','PF_width','PF_rate','PF_start_bins','PF_PVALS','PF_end_bins','number_of_PFs','mean_trans','label_high','label_low','ybinmax','empty_id','parameters');%,'cell_ROI','-append');
+% end
+save([behavior_filepaths(1:end-4) '_f_PF_strict_alllap_15lap_new'],'sig_PFs','sig_PFs_with_noise','PF_width','PF_rate','PF_start_bins','PF_PVALS','PF_end_bins','number_of_PFs','mean_trans','label_high','label_low','ybinmax','empty_id','parameters');%,'cell_ROI','-append');
 

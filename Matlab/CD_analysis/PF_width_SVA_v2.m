@@ -99,13 +99,13 @@ end
 
 
 
-% figure;
+figure;
 % 
 % range = 0:1:25;
 % histogram(PF_w_f,range,'Normalization','probability')%,'FaceColor',[0.5 0.25 0.7],'EdgeColor',[0.4660 0.6740 0.1880],'FaceAlpha',0.8);
 % 
-% hold on
-% histogram(PF_width_fam(1,:),range,'FaceColor','#7E2F8E','FaceAlpha',0.4);
+hold on
+histogram(PF_width_fam(1,:),range,'FaceColor','#7E2F8E','FaceAlpha',0.4);
 
 
 % xlabel('PF width');

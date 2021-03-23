@@ -37,7 +37,7 @@ Fc3_DF_GoodBehav=Fc3_DF;
 %%%%%%%%%%%%%%%%%%%parameters%%%%%%%%%%%%%%%%%
 
 ybinned=ybinned';
-E=bwlabel(double_thresh(ybinned,0.0145,0.014)); %labels each traversal
+E=bwlabel(double_thresh(ybinned,0.028,0.026)); %labels each traversal
 
 numneurons=size(Fc3_DF,2);
 trackstart=min(ybinned_GoodBehav)+0.005; %track start location in quake units (+10 accounts for any noise in the track start location after teleportation)
@@ -52,6 +52,8 @@ width_M=zeros(1000,1000);
 
 ybinmax=0.612;
 %% correct E
+figure;plot(ybinned)
+hold on; plot(E)
     wrong_lap=0;
     for i=1:max(E)
             
@@ -91,12 +93,14 @@ ybinmax=0.612;
     
 
 mean_trans=[];
+figure;plot(ybinned)
+hold on; plot(E)
 %%
 figure('units','normalized','outerposition',[0 0 1 1])
 subplot_x=10;
 %subplot_y=ceil(size(Fc2,2)/subplot_x);
 subplot_y=8;
-for ii =1:80%numneurons
+for ii =81:160%numneurons
     
     %%%%%%%%now cut out transients from each lap and bin them%%%%%%%%%%%%%%%%%
     
@@ -146,10 +150,21 @@ for ii =1:80%numneurons
     mean_trans(ii,:)=mean(binMean,2);
 %     figure;
 %     imagesc(binMean');
-subplot(subplot_y,subplot_x,ii);
+subplot(subplot_y,subplot_x,ii-80);
 imagesc(binMean');
 
     
 
     %close all
 end %loops through each neuron
+
+
+function chucked_heatmap()
+
+
+
+
+
+
+
+end

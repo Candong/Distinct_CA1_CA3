@@ -252,26 +252,6 @@ end
 %inst_summary=[inst_summary inst_total_cor];
 end
 
-%figure;
-%boxplot([f_total_SP; n_total_SP]')
-% subplot(1,2,1)
-% boxplot(f_total_SP)
-% subplot(1,2,2)
-% boxplot(n_total_SP)
-
-g1 = repmat({'F'},length(f_total_SP),1);
-g2 = repmat({'N'},length(n_total_SP),1);
-%g3 = repmat({'FN'},length(total_cor),1);
-g=[g1;g2];
-% figure
-% boxplot([f_total_SP,n_total_SP],g)
-%ylim([-1,1])
-% label={'non-PC','f-PC','common-PC','n-PC','multipf-PC'};
-% figure;
-% pie([sum(f_total_neuron)-sum(f_pf_num_summary)-sum(n_pf_num_summary)+sum(common_PC_num)...
-%      sum(f_pf_num_summary)-sum(common_PC_num)  sum(common_PC_num) sum(n_pf_num_summary)-sum(common_PC_num)...
-%      sum(f_multipf_num_summary)+sum(n_multipf_num_summary)])
-%  legend(label)
 
 
 remove_id=find(mean(f_start_mean,2)>5);
@@ -279,78 +259,11 @@ f_start_mean(remove_id,:)=[];
 f_end_mean(remove_id,:)=[];
 
 pop_cor_bybin=corr(f_start_mean,f_end_mean);
-% figure;
-% imagesc(flip(pop_cor_bybin));
-% title('pop corelation by bin')
-% hold on;plot(1:50,50:-1:1,'LineWidth',2)
-% 
-% 
-% remove_id=find(mean(n_start_mean,2)>5);
-% n_start_mean(remove_id,:)=[];
-% n_end_mean(remove_id,:)=[];
-% 
-% pop_cor_bybin=corr(n_start_mean,n_end_mean);
-% figure;
-% imagesc(flip(pop_cor_bybin));
-% title('pop corelation by bin')
-% hold on;plot(1:50,50:-1:1,'LineWidth',2)
-% colormap jet
+
 
 %%
 range=-1.01:0.02:1.01;
-% high_cor_id=find(common_total_cor>0.6);
-% figure;histogram(f_total_COM(high_cor_id)-n_total_COM(high_cor_id),range);
-%%
-% f_COMshift=nan(150,200);
-% n_COMshift=nan(150,200);
-% x_max=1;
-% y=[];
-% x=[];
-% for i =1:size(f_animal_COM,2)
-%     for p=1:size(f_animal_COM,1)
-%         if ~isempty(f_animal_COM{p,i})
-%         %x_max=max(x_max,size(f_animal_COM{p,i},1)-1);
-%         cur_COM_M=f_animal_COM{p,i};
-% %         cur_x=ones(size(cur_y)).*(1:size(cur_y,1))';
-%         for j=1:size(f_animal_COM{p,i},2)
-%             cur_y=cur_COM_M(:,j)';
-%             cur_x=1:length(cur_y)';
-%             remove_id=isnan(cur_y);
-%             cur_y(remove_id)=[];
-%             cur_y=cur_y-cur_y(1);           
-%             cur_x(remove_id)=[];
-%             cur_x=cur_x-cur_x(1);
-%             y=[y cur_y];
-%             x=[x cur_x];
-%         end
-%             
-% %         remove_id=isnan(cur_y);
-% %         cur_y(remove_id)=[];
-% %         cur_y=cur_y-cur_y(1);
-% %         cur_x(remove_id)=[];
-% %         cur_x=cur_x-curx
-% %         
-% % %         for j=1:size(f_aniamal_COM{p,i},2)
-% % %         cur_x=
-% % %         end
-% % %         
-% % %         
-% %          y=[y cur_y];
-% %          x=[x cur_x];
-%         end
-%         
-%         
-%     end
-% end
-% [f_model f_x f_y]=linreg_for_allCOM(f_animal_COM);
-% [n_model n_x n_y]=linreg_for_allCOM(n_animal_COM);
-% figure;plot(f_x,f_y,'o')
-% 
-% %mdl=fitlm(x,y);
-% hold on;
-% a=f_model.('Coefficients').('Estimate')(2);
-% plot(f_x,f_model.('Coefficients').('Estimate')(2).*f_x+ f_model.('Coefficients').('Estimate')(1));
-% title(['slope=' num2str(a)]);
+
 
 %%
 % NOTICE only used the first and last 5 laps that have activities. amount
@@ -463,189 +376,54 @@ end
 f_notout=find(~isoutlier(total_f_act_shift,'mean'));
 n_notout=find(~isoutlier(total_n_act_shift,'mean'));
 %% Shuffle the data
-shuffle_num=1;
-[f_shift_dist_M f_start5 f_end5]=find_shuffle_dist(shuffle_num,f_sig_PFs,f_pf_id,f_PF_start_bins,f_PF_end_bins,numbins,all_bins,ave_bin);
-[day1_shift_dist_M day1_start5 day1_end5]=find_shuffle_dist(shuffle_num,f_sig_PFs,common_PC_id,f_PF_start_bins,f_PF_end_bins,numbins,all_bins,ave_bin);
-
-
-f_total_h=[];f_total_p=[];
-for i=1:shuffle_num
-  [f_h,f_p]=kstest2(f_shift_dist_M(i,:),total_f_act_shift,'Tail','larger') ; 
-  f_total_h=[f_total_h f_h];
-  f_total_p=[f_total_p f_p];
-  
-end
-%%
-% figure;
-% histogram(f_shift_dist_M(1,:),range);
-% hold on;
-% histogram(total_f_act_shift,range);
-% title(['f example, significant trails:' num2str(sum(f_total_h)) 'out of' num2str(shuffle_num)]);
-% legend({'f shuffle','f shift'})
-% text(10,180,['f mean=' num2str(mean(total_f_act_shift(f_notout)))]);
-% text(10,160,['f shuffle mean=' num2str(mean(f_shift_dist_M(1,:)))]);
-% text(10,140,['f variance=' num2str(var(total_f_act_shift(f_notout)))]);
-% text(10,120,['f shuffle variance=' num2str(var(f_shift_dist_M(1,:)))]);
-% text(10,100,['f kurtosis=' num2str(kurtosis(total_f_act_shift(f_notout)))]);
-% text(10,80,['f shuffle kurtosis=' num2str(kurtosis(f_shift_dist_M(1,:)))]);
-% text(10,60,['f skewness=' num2str(skewness(total_f_act_shift(f_notout)))]);
-% text(10,40,['f shuffle skewness=' num2str(mean(skewness(f_shift_dist_M')))]);
-%%
-
-[n_shift_dist_M n_start5 n_end5]=find_shuffle_dist(shuffle_num,n_sig_PFs,n_pf_id,n_PF_start_bins,n_PF_end_bins,numbins,all_bins,ave_bin);
-[day2_shift_dist_M day2_start5 day2_end5]=find_shuffle_dist(shuffle_num,n_sig_PFs,common_PC_id,n_PF_start_bins,n_PF_end_bins,numbins,all_bins,ave_bin);
-
-
-n_total_h=[];n_total_p=[];
-for i=1:shuffle_num
-  [n_h,n_p]=kstest2(n_shift_dist_M(i,:),total_n_act_shift,'Tail','larger') ; 
-  n_total_h=[n_total_h n_h];
-  n_total_p=[n_total_p n_p];
-  
-end
-
-%%
-shuffle_2day_shift=day1_end5-day2_start5;
-[shuffle_h shuffle_p]=kstest2(total_twoday_shift,shuffle_2day_shift)
- figure;%histogram(shuffle_2day_shift,-50:1:50,'Normalization','Probability')
- hold on;histogram(total_twoday_shift,-50:1:50,'Normalization','Probability')
- [sym_p sym_h]=signrank(total_twoday_shift)
- %legend('shuffle','across days')
- xlabel('bin')
- title(['across day shift.sign rank test p=' num2str(sym_p)])
-[sym_p sym_h]=signrank(total_twoday_shift)
-
-
-
-%%
-% figure;
-% histogram(n_shift_dist_M(1,:),range);
-% hold on;
-% histogram(total_n_act_shift,range);
-% title(['n example, significant trails:' num2str(sum(n_total_h)) 'out of' num2str(shuffle_num)]);
-% legend({'n shuffle','n shift'})
-% text(10,180,['n mean=' num2str(mean(total_n_act_shift(n_notout)))]);
-% text(10,160,['n shuffle mean=' num2str(mean(n_shift_dist_M(1,:)))]);
-% text(10,140,['n variance=' num2str(var(total_n_act_shift(n_notout)))]);
-% text(10,120,['n shuffle variance=' num2str(var(n_shift_dist_M(1,:)))]);
-% text(10,100,['n kurtosis=' num2str(kurtosis(total_n_act_shift(n_notout)))]);
-% text(10,80,['n shuffle kurtosis=' num2str(kurtosis(n_shift_dist_M(1,:)))]);
-% text(10,60,['n skewness=' num2str(skewness(total_n_act_shift(n_notout)))]);
-% text(10,40,['n shuffle skewness=' num2str(mean(skewness(n_shift_dist_M')))]);
-%%
-% figure;
-% % subplot(2,2,1) histogram(total_f_norm_fromstart_shift,range);
-% % title('from start f') subplot(2,2,2)
-% % histogram(total_n_norm_fromstart_shift,range); title('from start n')
-% subplot(2,2,1)
-% histogram(total_f_act_shift,range);
-% title('act f')
-% subplot(2,2,2)
-% histogram(total_n_act_shift,range,'FaceColor','m');
-% title('act n')
-% subplot(2,2,3);
-% histogram(total_twoday_shift,range,'FaceColor','y')
-% subplot(2,2,4);
-% histogram(total_f_act_shift,range)
-% hold on;histogram(total_n_act_shift,range)
-% %histogram(total_twoday_shift,range)
-% legend({'f shift','n shift'})
-% % %line([0 0],[0 150],'Color','r');
-% set(gcf, 'Position',  [100, 100, 1000, 800])
-%% remove the outlier
-
+% shuffle_num=1;
+% [f_shift_dist_M f_start5 f_end5]=find_shuffle_dist(shuffle_num,f_sig_PFs,f_pf_id,f_PF_start_bins,f_PF_end_bins,numbins,all_bins,ave_bin);
+% [day1_shift_dist_M day1_start5 day1_end5]=find_shuffle_dist(shuffle_num,f_sig_PFs,common_PC_id,f_PF_start_bins,f_PF_end_bins,numbins,all_bins,ave_bin);
 % 
-% figure;
-% % subplot(2,3s2,1) histogram(total_f_norm_fromstart_shift,range);
-% % title('from start f') subplot(2,2,2)
-% % histogram(total_n_norm_fromstart_shift,range); title('from start n')
-% subplot(2,2,1)
-% histogram(total_f_act_shift(f_notout),range);
-% title('act f')
-% subplot(2,2,2)
-% histogram(total_n_act_shift(n_notout),range,'FaceColor','m');
-% title('act n')
-% subplot(2,2,3);
-% histogram(total_twoday_shift,range,'FaceColor','y')
-% subplot(2,2,4);
-% histogram(total_f_act_shift(f_notout),range)
-% hold on;histogram(total_n_act_shift(n_notout),range)
-% %histogram(total_twoday_shift,range)
-% legend({'f shift','n shift'})
-% %line([0 0],[0 150],'Color','r');
-% set(gcf, 'Position',  [100, 100, 1000, 800])
-%%
-% stable_id=find(common_day1_shift>-0.5&common_day1_shift<0.5);
-% shifty_id=find(common_day1_shift<=-0.5|common_day1_shift>=0.5);
 % 
-% figure;
-% subplot(2,2,1);
-% histogram(common_day2_shift(stable_id),range);
-% title('stable neuron day1')
-% subplot(2,2,2)
-% histogram(common_day2_shift(shifty_id),range);
-% title('shifty neuron day1')
-% subplot(2,2,3);
-% histogram(common_day2_shift(stable_id),range,'Normalization','probability')
-% title('stable neuron day2')
-% subplot(2,2,4)
-% histogram(common_day2_shift(shifty_id),range,'Normalization','probability')
-% title('shifty neuron day2')
-% set(gcf, 'Position',  [100, 100, 1000, 800])
+% f_total_h=[];f_total_p=[];
+% for i=1:shuffle_num
+%   [f_h,f_p]=kstest2(f_shift_dist_M(i,:),total_f_act_shift,'Tail','larger') ; 
+%   f_total_h=[f_total_h f_h];
+%   f_total_p=[f_total_p f_p];
+%   
+% end
 
-% figure;
-% plot(common_day1_shift,common_day2_shift,'o')
-% hold on;
-% %plot(common_day1_shift,common_day1_shift)
-% plot(zeros(1,length(common_day2_shift)),common_day2_shift)
-% plot(common_day1_shift,zeros(1,length(common_day1_shift)))
-% xlabel('day1 shift')
-% ylabel('day2 shift')
+%%
+
+% [n_shift_dist_M n_start5 n_end5]=find_shuffle_dist(shuffle_num,n_sig_PFs,n_pf_id,n_PF_start_bins,n_PF_end_bins,numbins,all_bins,ave_bin);
+% [day2_shift_dist_M day2_start5 day2_end5]=find_shuffle_dist(shuffle_num,n_sig_PFs,common_PC_id,n_PF_start_bins,n_PF_end_bins,numbins,all_bins,ave_bin);
+% 
+% 
+% n_total_h=[];n_total_p=[];
+% for i=1:shuffle_num
+%   [n_h,n_p]=kstest2(n_shift_dist_M(i,:),total_n_act_shift,'Tail','larger') ; 
+%   n_total_h=[n_total_h n_h];
+%   n_total_p=[n_total_p n_p];
+%   
+% end
+
+%%
+% shuffle_2day_shift=day1_end5-day2_start5;
+% [shuffle_h shuffle_p]=kstest2(total_twoday_shift,shuffle_2day_shift)
+%  figure;%histogram(shuffle_2day_shift,-50:1:50,'Normalization','Probability')
+%  hold on;histogram(total_twoday_shift,-50:1:50,'Normalization','Probability')
+%  [sym_p sym_h]=signrank(total_twoday_shift)
+%  %legend('shuffle','across days')
+%  xlabel('bin')
+%  title(['across day shift.sign rank test p=' num2str(sym_p)])
+% [sym_p sym_h]=signrank(total_twoday_shift)
+
+
+
 %%
 f_instant_id=find(total_f_start_lap==1);
 f_delay_id=find(total_f_start_lap>1);
 n_instant_id=find(total_n_start_lap==1);
 n_delay_id=find(total_n_start_lap>1);
-% 
-% figure;
-% subplot(2,3,1);
-% histogram(total_f_act_shift(f_instant_id),range);
-% title('instant neuron day1')
-% subplot(2,3,2)
-% histogram(total_f_act_shift(f_delay_id),range);
-% title('delay neuron day1')
-% subplot(2,3,3)
-% histogram(total_f_act_shift(f_instant_id),range,'Normalization','probability')
-% hold on
-% histogram(total_f_act_shift(f_delay_id),range,'Normalization','probability')
-% subplot(2,3,4);
-% histogram(total_n_act_shift(n_instant_id),range)%,'Normalization','probability')
-% title('instant neuron day2')
-% subplot(2,3,5)
-% histogram(total_n_act_shift(n_delay_id),range)%,'Normalization','probability')
-% title('delay neuron day2')
-% subplot(2,3,6)
-% histogram(total_n_act_shift(n_instant_id),range,'Normalization','probability')
-% hold on
-% histogram(total_n_act_shift(n_delay_id),range,'Normalization','probability')
-% set(gcf, 'Position',  [100, 100, 1000, 800])
-%%
-% figure;
-% plot(total_f_start_lap(f_notout),total_f_act_shift(f_notout),'o')
-% hold on
-% plot(total_n_start_lap(n_notout),total_n_act_shift(n_notout),'o')
 
 
-%%
-% figure;
-% subplot(2,1,1)
-% plot(f_total_COM(f_notout),total_f_act_shift(f_notout),'o')
-% title('f')
-% ylim([-10 20])
-% subplot(2,1,2)
-% plot(n_total_COM(n_notout),total_n_act_shift(n_notout),'o')
-% title('n1')
-% ylim([-10 20])
+
 %%
 pc_label={'non-PC','f-PC','common-PC','n-PC'};
 pf_label={'f-PF', 'f-multiPF','n-pf','n-multipf','common-pf'};
@@ -657,27 +435,27 @@ pf_label={'f-PF', 'f-multiPF','n-pf','n-multipf','common-pf'};
 %      sum(common_PC_num) sum(n_pf_num_summary)-sum(common_PC_num)+sum(n_multipf_num_summary)])
 %  legend(pc_label)
  
- delay_range=1:50;
- figure;
- subplot(1,2,1)
- histogram(total_day1_startlap,delay_range);
- title('f common pc')
- subplot(1,2,2)
- common_day1_dist=histc(total_day1_startlap,delay_range);
- f_dist=histc(total_f_start_lap,delay_range);
-bar(f_dist-common_day1_dist);
-title('f uncommon pc')
-  figure;
-  subplot(1,2,1)
- histogram(total_day2_startlap,delay_range);
- title('n common pc')
-  subplot(1,2,2)
- common_day2_dist=histc(total_day2_startlap,delay_range);
- n_dist=histc(total_n_start_lap,delay_range);
-bar(n_dist-common_day2_dist);
-title('n uncommon pc')
- 
-figure;histogram(total_twoday_shift,-50:1:50) 
+%  delay_range=1:50;
+%  figure;
+%  subplot(1,2,1)
+%  histogram(total_day1_startlap,delay_range);
+%  title('f common pc')
+%  subplot(1,2,2)
+%  common_day1_dist=histc(total_day1_startlap,delay_range);
+%  f_dist=histc(total_f_start_lap,delay_range);
+% bar(f_dist-common_day1_dist);
+% title('f uncommon pc')
+%   figure;
+%   subplot(1,2,1)
+%  histogram(total_day2_startlap,delay_range);
+%  title('n common pc')
+%   subplot(1,2,2)
+%  common_day2_dist=histc(total_day2_startlap,delay_range);
+%  n_dist=histc(total_n_start_lap,delay_range);
+% bar(n_dist-common_day2_dist);
+% title('n uncommon pc')
+%  
+% figure;histogram(total_twoday_shift,-50:1:50) 
  
 %  subplot(1,2,2)
 % title('PF summary')
@@ -688,42 +466,86 @@ figure;histogram(total_twoday_shift,-50:1:50)
 %  legend(pf_label)
  
 %%
+% by lap delta COM
 stepsize=5;
 standardlap=12;
 stoplap=25;
-[f_x f_y f_jump_y f_jump_x]=linreg_for_bylap_groupedCOM(f_sig_PFs,f_pf_id,f_norm_act_COMshift,f_startlap,stepsize,standardlap,stoplap);
-[n_x n_y n_jump_y n_jump_x]=linreg_for_bylap_groupedCOM(n_sig_PFs,n_pf_id,n_norm_act_COMshift,n_startlap,stepsize,standardlap,stoplap);
- lap_range=1:1:max(f_x);
-[count id]=histc(f_x,lap_range);
-mean_fy=[];
-f_sem=[];
-for i=lap_range
-    cur_fy=f_y(id==i);
-    mean_fy=[mean_fy mean(cur_fy)];
-    f_sem= [f_sem std(cur_fy)/sqrt(length(cur_fy))];
-end
+[f_x f_y  f_x_M f_y_M f_start_lap_v f_standard_lap_COM]=linreg_for_bylap_groupedCOM(f_sig_PFs,f_pf_id,f_norm_act_COMshift,f_startlap,stepsize,standardlap,stoplap);
+[n_x n_y  n_x_M n_y_M n_start_lap_v n_standard_lap_COM]=linreg_for_bylap_groupedCOM(n_sig_PFs,n_pf_id,n_norm_act_COMshift,n_startlap,stepsize,standardlap,stoplap);
+%  lap_range=1:1:max(f_x);
+% % [count id]=histc(f_x,lap_range);
+% % mean_fy=[];
+% % f_sem=[];
+% 
+[lap_range mean_fy f_sem]=cal_mean_sem(f_x, f_y);
 figure;
 %plot(range,mean_y,'o')
 errorbar(lap_range,mean_fy,f_sem,'o')
 
- lap_range=1:1:max(n_x);
-[count id]=histc(n_x,lap_range);
-mean_ny=[];
-n_sem=[];
-for i=lap_range
-    cur_ny=n_y(id==i);
-    mean_ny=[mean_ny mean(cur_ny)];
-    n_sem= [n_sem std(cur_ny)/sqrt(length(cur_ny))];
-end
+[lap_range mean_ny n_sem]=cal_mean_sem(n_x, n_y);
 hold on;
 %plot(range,mean_y,'o')
 errorbar(lap_range,mean_ny,n_sem,'o')
 legend({'nday1','nday2'})
 ylim([-2 2])
-title('CA3 n day1 and day2')
+title('CA1 n day1 and day2')
 
- %save(['CA3_fnovel_deltaCOM_' num2str(stoplap)],'f_x','f_y','n_x','n_y','f_jump_y','n_jump_y',...
- % 'f_jump_x','n_jump_x');
+%%
+
+for i=1:10
+    
+    cur_f_standard_lap_COM= f_standard_lap_COM(f_start_lap_v==i);
+    cur_f_y=f_y_M(f_start_lap_v==i,:)+cur_f_standard_lap_COM';
+    cur_f_y=cur_f_y-cur_f_y(:,i);
+    cur_f_y=reshape(cur_f_y,1,[]);
+    cur_f_x=reshape(f_x_M(f_start_lap_v==i,:),1,[]);  
+    cur_remove=isnan(cur_f_y)|cur_f_x<i;
+    cur_f_y(cur_remove)=[];
+    cur_f_x(cur_remove)=[];
+    
+    cur_n_standard_lap_COM= n_standard_lap_COM(n_start_lap_v==i);
+    cur_n_y=n_y_M(n_start_lap_v==i,:)+cur_n_standard_lap_COM';
+    cur_n_y=cur_n_y-cur_n_y(:,i);
+    cur_n_y=reshape(cur_n_y,1,[]);
+    cur_n_x=reshape(n_x_M(n_start_lap_v==i,:),1,[]);  
+    cur_remove=isnan(cur_n_y)| cur_n_x<i;
+    cur_n_y(cur_remove)=[];
+    cur_n_x(cur_remove)=[];
+    figure; hold on;
+    subplot(1,2,1)
+    hold on;
+    [lap_range cur_mean_fy cur_f_sem]=cal_mean_sem(cur_f_x, cur_f_y);
+    [lap_range cur_mean_ny cur_n_sem]=cal_mean_sem(cur_n_x, cur_n_y);
+    errorbar(lap_range,cur_mean_fy,cur_f_sem,'-o')
+
+    errorbar(lap_range,cur_mean_ny,cur_n_sem,'-or')
+    title(['onset lap= ' num2str(i) ])
+    legend({'f', 'n'})
+    xlabel('lap')
+    ylabel('delta COM / bin')
+    xlim([0 25])
+    
+    subplot(1,2,2)
+    %histogram(cur_f_y(cur_f_x==i+1),-9.5:1:9.5);
+
+    histogram(cur_n_y(cur_n_x==(i+1)),-49.5:1:49.5,'FaceColor','r');
+    xlabel('delta COM of first and  second lap /bin')
+    ylabel('number of PF')
+    box off
+    set(gcf, 'Position',  [100, 100, 1200, 500])
+    [p h]=signrank(cur_n_y(cur_n_x==i+1));
+    title(num2str(p))
+    %saveas(gcf,['new_lap=' num2str(i) '.svg'])
+    
+end
+
+
+
+
+
+% 
+%   save(['noclip_CA3_fnovel_deltaCOM_' num2str(stoplap)],'f_x','f_y','n_x','n_y',...
+%    'f_x_M','f_y_M','n_x_M','n_y_M');
 
 %  lap_range=unique(f_jump_x);
 % [count id]=histc(f_jump_x,lap_range);
