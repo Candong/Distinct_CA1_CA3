@@ -1,7 +1,8 @@
-clear all; close all;
+%clear all; close all;
 
 [remap_filepaths, temp]=uigetfile('*.mat', 'Chose remap info files to load:','MultiSelect','on');
 remap_filepaths=sort(remap_filepaths);
+%%
 f_summary_meantrans=[];
 n_summary_meantrans=[];
 f_in_n_summary_meantrans=[];

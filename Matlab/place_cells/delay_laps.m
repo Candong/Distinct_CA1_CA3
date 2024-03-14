@@ -223,7 +223,7 @@ hold on;bar(n_distribution./sum(n_distribution))
 %legend({'f','n'})
 %ylim([0 350]);
 
-%figure
+figure
 norm_f=f_distribution/sum(f_distribution);
 norm_n=n_distribution/sum(n_distribution);
 %%
